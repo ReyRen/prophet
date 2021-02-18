@@ -1,0 +1,11 @@
+---
+- name: create docker-prophet in /etc
+  file:
+    path: /etc/docker-prophet
+    state: directory
+    recurse: yes
+
+- name: copy nvidia runtime configuration file into /etc/docker-prophet
+  copy:
+    src: daemon-prophet-default-runtime.json
+    dest: /etc/docker-prophet/daemon-prophet.json

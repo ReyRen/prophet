@@ -25,3 +25,18 @@ if [ $ret_code_check -ne 0 ]; then
     exit $ret_code_check
   fi
 fi
+
+echo "Generating kubespray configuration..."
+/bin/bash script/configuration-kubespray.sh -l ${LAYOUT} -c ${CLUSTER_CONFIG} || exit $?
+
+echo "Performing ping test..."
+ansible all -i ${HOME}/prophet-deploy/cluster-cfg/hosts.yml -m ping || exit $?
+
+echo "Performing pre-check..."
+ansible-playbook -i ${HOME}/prophet-pre-check/pre-check.yml set-host-daemon-port-range.yml -e "@${CLUSTER_CONFIG}" || exit $?
+
+echo "Performing pre-installation..."
+ansible-playbook -i ${HOME}/prophet-deploy/cluster-cfg/hosts.yml pre-installation.yml || exit $?
+
+echo "Starting kubernetes..."
+/bin/bash script/kubernetes-boot.sh || exit $?

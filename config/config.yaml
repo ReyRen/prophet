@@ -4,7 +4,7 @@ password: adminADMIN#@!
 enable_hived_scheduler: false
 #####################################
 # docker_registry_domain: docker.io
-# docker_registry_namespace: openpai
+# docker_registry_namespace: prophet
 # docker_registry_username: exampleuser
 # docker_registry_password: examplepasswd
 
@@ -52,4 +52,4 @@ prophet_kubespray_extra_var:
   metrics_server_image_repo: "172.18.29.81:8080/generalai/google_containers/metrics-server-amd64"
   addon_resizer_image_repo: "172.18.29.81:8080/generalai/google_containers/addon-resizer"
   dashboard_image_repo: "172.18.29.81:8080/generalai/google_containers/kubernetes-dashboard-{{ image_arch }}"
-  #openpai_kube_network_plugin: calico
+#prophet_kube_network_plugin: calico
