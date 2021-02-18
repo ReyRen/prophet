@@ -1,0 +1,55 @@
+user: root
+password: adminADMIN#@!
+
+enable_hived_scheduler: false
+#####################################
+# docker_registry_domain: docker.io
+# docker_registry_namespace: openpai
+# docker_registry_username: exampleuser
+# docker_registry_password: examplepasswd
+
+########################################################################################
+# Advanced docker configuration. If you are not familiar with them, don't change them. #
+########################################################################################
+# docker_data_root: /mnt/docker
+# docker_config_file_path: /etc/docker/daemon.json
+# docker_iptables_enabled: false
+
+## An obvious use case is allowing insecure-registry access to self hosted registries.
+## Can be ipaddress and domain_name.
+## example define 172.19.16.11 or mirror.registry.io
+prophet_docker_insecure_registries:
+  - 172.18.29.81:8080
+
+#######################################################################
+#                       kubespray setting                             #
+#######################################################################
+#
+# If you couldn't access to gcr.io or docker.io, please configure it.
+gcr_image_repo: "172.18.29.81:8080/generalai"
+kube_image_repo: "172.18.29.81:8080/generalai"
+docker_image_repo: "172.18.29.81:8080/generalai"
+quay_image_repo: "172.18.29.81:8080/generalai"
+
+pod_infra_version: "3.1"
+weave_version: 2.8.0
+dnsautoscaler_version: 1.6.0
+ingress_nginx_controller_image_tag: "v0.41.2"
+
+kubelet_download_url: "http://172.18.29.81/ftp/generalAI-binary/kubelet"
+kubectl_download_url: "http://172.18.29.81/ftp/generalAI-binary/kubectl"
+kubeadm_download_url: "http://172.18.29.81/ftp/generalAI-binary/kubeadm"
+etcd_download_url: "http://172.18.29.81/ftp/generalAI-binary/etcd-{{ etcd_version }}-linux-{{ image_arch }}.tar.gz"
+cni_download_url: "http://172.18.29.81/ftp/generalAI-binary/cni-plugins-linux-{{ image_arch }}-{{ cni_version }}.tgz"
+calicoctl_download_url: "http://172.18.29.81/ftp/generalAI-binary/calicoctl-linux-{{ image_arch }}"
+crictl_download_url: "http://172.18.29.81/ftp/generalAI-binary/crictl-{{ crictl_version }}-{{ ansible_system | lower }}-{{ image_arch }}.tar.gz"
+helm_download_url: "http://172.18.29.81/ftp/generalAI-binary/helm-{{ helm_version }}-linux-{{ image_arch }}.tar.gz"
+prophet_kubespray_extra_var:
+  pod_infra_image_repo: "172.18.29.81:8080/generalai/google_containers/pause-{{ image_arch }}"
+  dnsautoscaler_image_repo: "172.18.29.81:8080/generalai/google_containers/cluster-proportional-autoscaler-{{ image_arch }}"
+  tiller_image_repo: "172.18.29.81:8080/generalai/kubernetes-helm/tiller"
+  registry_proxy_image_repo: "172.18.29.81:8080/generalai/google_containers/kube-registry-proxy"
+  metrics_server_image_repo: "172.18.29.81:8080/generalai/google_containers/metrics-server-amd64"
+  addon_resizer_image_repo: "172.18.29.81:8080/generalai/google_containers/addon-resizer"
+  dashboard_image_repo: "172.18.29.81:8080/generalai/google_containers/kubernetes-dashboard-{{ image_arch }}"
+  #openpai_kube_network_plugin: calico
