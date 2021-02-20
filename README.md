@@ -20,7 +20,7 @@ prophet所安装的组件为支撑起最基本的分布式训练的最精简组�
 
 ### 安装要求
 
-单节点kubernetes集群: H（表示远程安装控制节点）、S（表示主机名称）
+目前版本只支持多机部署
 
 多节点kubernetes集群：H（表示远程安装控制节点）、M0（表示master节点）、M1（表示worker节点）
 
@@ -57,4 +57,11 @@ apt-cache madison docker-ce
 apt install docker-ce=5:19.03.14~3-0~ubuntu-bionic
 apt install docker-ce-cli=5:19.03.14~3-0~ubuntu-bionic
 不要进行nvidia-docker/nvidia-driver/cuda的安装
+```
+**M0**
+接下来，请编辑<prophet-code-dir>/contrib/kubespray/config目录下的layout.yaml和config.yaml文件,
+这两个文件分别指定了集群的机器组成和自定义设置.
+```
+cd <prophet-code-dir>/contrib/kubespray
+/bin/bash quick-start-kubespray.sh
 ```
