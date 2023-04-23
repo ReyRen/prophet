@@ -5,10 +5,10 @@ machine-sku:
     # the resource requirements for all the machines of this sku
     # We use the same memory format as Kubernetes, e.g. Gi, Mi
     # Reference: https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/#meaning-of-memory
-    mem: 512Gi
+    mem: 30Gi
     cpu:
       # the number of CPU vcores
-      vcore: 80
+      vcore: 56
   gpu-machine:
     computing-device:
       # For `type`, please follow the same format specified in device plugin.
@@ -23,11 +23,11 @@ machine-sku:
       vcore: 56
 
 machine-list:
-  - hostname: specialai-3090-0 # name of the machine, **do not** use upper case alphabet letters for hostname
-    hostip: 172.18.36.230
+  - hostname: node4 # name of the machine, **do not** use upper case alphabet letters for hostname
+    hostip: 172.18.36.223
     machine-type: master-machine # only one master-machine supported
     prophet-master: "true"
-  - hostname: node4
-    hostip: 172.18.36.223
+  - hostname: node6
+    hostip: 172.18.36.225
     machine-type: gpu-machine
     prophet-worker: "true"
