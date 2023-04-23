@@ -28,4 +28,7 @@ echo "cluster config file path: ${CLUSTER_CONFIG}"
 echo "Setting up environment..."
 # 如果出现 ERROR: Cannot uninstall 'PyYAML'的报错
 # 执行 pip install --ignore-installed PyYAML
-/bin/bash script/environment.sh -c ${CLUSTER_CONFIG} || exit $?
+#/bin/bash script/environment.sh -c ${CLUSTER_CONFIG} || exit $?
+
+echo "Checking layout.yaml schema..."
+python3 script/validate_layout_schema.py -l ${LAYOUT} -c ${CLUSTER_CONFIG} || exit $?
