@@ -1,6 +1,8 @@
 # prophet
 部署kubernetes基础组件
 
+#测试贡献
+
 prophet所安装的组件为支撑起最基本的分布式训练的最精简组件：
 
 - gpu-operator
