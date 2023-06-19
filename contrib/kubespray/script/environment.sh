@@ -34,12 +34,12 @@ sudo add-apt-repository ppa:deadsnakes/ppa
 
 echo "Install Python3 and pip"
 sudo apt-get update
-sudo apt-get -y install software-properties-common python3.9 python3-dev python3-pip
-# set python3.9 as the default python3 and python
+# python3-dev python3-setuptools python3-wheel
+sudo apt-get -y install software-properties-common python3.8 python3.8-dev python3-pip
+# set python3.8 as the default python3
 sudo rm -rf /usr/bin/python3
-sudo ln -s /usr/bin/python3 /usr/bin/python3.9
-sudo rm -rf /usr/bin/python
-sudo ln -s /usr/bin/python /usr/bin/python3.9
+sudo ln -s /usr/bin/python3.8 /usr/bin/python3
+
 # Here we use a fixed version number to ensure compatibility.
 #sudo python3 -m pip install pip==20.3.4
 sudo python3 -m pip install --upgrade pip
