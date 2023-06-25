@@ -32,3 +32,6 @@ echo "Setting up environment..."
 
 echo "Checking layout.yaml schema..."
 python3 script/validate_layout_schema.py -l ${LAYOUT} -c ${CLUSTER_CONFIG} || exit $?
+
+echo "Checking requirement..."
+/bin/bash requirement.sh -l ${LAYOUT} -c ${CLUSTER_CONFIG}
