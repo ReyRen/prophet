@@ -1,7 +1,9 @@
 import argparse
 import sys
 from schema import Schema, Or, Optional, Regex
-from utils import get_logger, load_yaml_config, get_master_workers_from_layout
+from utils import get_logger, load_yaml_config, get_masters_workers_from_layout
+
+logger = get_logger(__name__)
 
 def validate_layout_schema(layout):
     scehma = Schema(
@@ -33,6 +35,52 @@ def validate_layout_schema(layout):
     )
     return scehma.validate(layout)
 
+def check_layout(layout, cluster_config):
+    # hostname / hostip should be unique
+    hostnames = [elem['hostname'] for elem in layout['machine-list']]
+    if len(hostnames) != len(set(hostnames)): # set中会去除重复的
+        logger.error("hostname should be unique")
+        return False
+    hostips = [elem['hostip'] for elem in layout['machine-list']]
+    if len(hostips) != len(set(hostips)):
+        logger.error("hostip should be unique")
+        return False
+
+     # machine-type should be defined in machine-sku
+     # collect types of computing device
+    worker_computing_devices = set()
+    for machine in layout['machine-list']:
+        if machine['machine-type'] not in layout['machine-sku']:
+            logger.error("machine-type %s is not defined", machine['machine-type'])
+            return False
+        machine_sku = layout['machine-sku'][machine['machine-type']]
+        if 'prophet-worker' in machine and machine['prophet-worker'] == 'true' and 'computing-device' in machine_sku:
+            worker_computing_devices.add(machine_sku['computing-device']['type'])
+    worker_computing_devices = list(worker_computing_devices) # set---list
+     
+    masters, workers = get_masters_workers_from_layout(layout)
+    # only one prophet-master
+    if len(masters) == 0:
+        logger.error('No master machine specified.')
+        return False
+    if len(masters) > 1:
+        logger.error('More than one master machine specified.')
+        return False
+    # at least one prophet-worker
+    if len(workers) == 0:
+        logger.error('No worker machine specified.')
+        return False
+    # prophet-master / prophet-worker cannot be true at the same time
+    if 'prophet-worker' in masters[0] and masters[0]['prophet-worker'] == 'true':
+        logger.error("One machine can not be prophet-master and prophet-worker at the same time.")
+        return False
+    # if cluster_config.enable_hived_scheduler is false, there should be <= 1 type of computing device
+    if 'enable_hived_scheduler' in cluster_config and cluster_config['enable_hived_scheduler'] is False:
+        if len(worker_computing_devices) > 1:
+            logger.error('K8S default scheduler only supports <= 1 type of computing device in worker nodes.')
+            return False
+    return True
+    
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument('-l', '--layout', dest="layout", required=True,
@@ -49,6 +97,12 @@ def main():
     except Exception as exp:
         logger.error("layout.yaml schema validation failed: \n %s", exp)
         sys.exit(1)
+    
+    if not check_layout(layout, cluster_config):
+        logger.error("layout.yaml schema validation failed")
+        sys.exit(1)
+
+    logger.info("layout.yaml schema validation succeeded.")
 
 
 if __name__ == "__main__": # 在这个底下的代码当import的时候，不会被执行
