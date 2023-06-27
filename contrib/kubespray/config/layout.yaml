@@ -27,7 +27,7 @@ machine-list:
     hostip: 172.18.36.223
     machine-type: master-machine # only one master-machine supported
     prophet-master: "true"
-  - hostname: node6
-    hostip: 172.18.36.225
+  - hostname: node5
+    hostip: 172.18.36.224
     machine-type: gpu-machine
     prophet-worker: "true"

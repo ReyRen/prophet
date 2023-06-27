@@ -1,0 +1,5 @@
+---
+- hosts: all,localhost
+  gather_facts: false
+  roles:
+    - { role: set-python3 }

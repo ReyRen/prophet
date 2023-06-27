@@ -27,6 +27,6 @@ function cleanup(){
 #trap cleanup EXIT
 
 mkdir -p ${HOME}/prophet-pre-check/
-#python3 script/pre_check_generator.py -l ${LAYOUT} -c ${CLUSTER_CONFIG} -o ${HOME}/prophet-pre-check
+python3 script/pre_check_generator.py -l ${LAYOUT} -c ${CLUSTER_CONFIG} -o ${HOME}/prophet-pre-check
 
-#ansible-playbook -i ${HOME}/prophet-pre-check/pre-check.yml environment-check.yml -e "@${CLUSTER_CONFIG}"
+ansible-playbook -i ${HOME}/prophet-pre-check/pre-check.yml environment-check.yml -e "@${CLUSTER_CONFIG}" -vvvv

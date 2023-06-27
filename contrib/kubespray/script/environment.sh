@@ -46,6 +46,15 @@ sudo python3 -m pip install --upgrade pip
 
 echo "Install python packages"
 sudo python3 -m pip install paramiko # need paramiko for ansible-playbook
+sudo pip install --ignore-installed PyYAML # 防止ERROR: Cannot uninstall 'PyYAML'.错误
+
+# google-auth 2.21.0 requires urllib3<2.0
+pip uninstall google-auth
+pip install --upgrade google-auth
+# urllib3 ({0}) or chardet ({1}) doesn't match a supported
+pip uninstall urllib3 chardet
+pip install --upgrade requests
+
 sudo python3 -m pip install -r script/requirements.txt
 
 echo "Install sshpass"
